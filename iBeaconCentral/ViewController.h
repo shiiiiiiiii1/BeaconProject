@@ -17,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *rssi;
 
 @property (weak, nonatomic) IBOutlet UILabel *timer;
+@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+- (IBAction)sendText:(id)sender;
 
 @end
 

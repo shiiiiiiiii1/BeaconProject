@@ -24,6 +24,16 @@
 {
   [super viewDidLoad];
   // Do any additional setup after loading the view, typically from a nib.
+
+  
+  
+  
+//  NSString *str = [self generateRandomStr:6];
+  NSString *str = @"sample";
+  [self countTime:20 inputField:self.textField.text inputAnswer:str];
+  
+  
+  
   
   if ([CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
     // CLLocationManagerの生成とデリゲートの設定
@@ -51,7 +61,7 @@
     NSLog(@"cannot use");
   }
   
-  [self countTime:20];
+
   
 }
 
@@ -141,6 +151,7 @@
 //    [self sendLocalNotificationForMessage:[rangeMessage stringByAppendingString:message]];
 
     NSLog(@"%@ %@", rangeMessage, message);   // ここで値の更新がされる
+    
 //    _range.text = rangeMessage;
 //    _major.text = [NSString stringWithFormat:@"major:%@", nearestBeacon.major];
 //    _minor.text = [NSString stringWithFormat:@"minor:%@", nearestBeacon.minor];
@@ -168,25 +179,40 @@
 
 
 
-- (void)countTime:(int)time
+// タイマー関数
+- (void)countTime:(int)time inputField:(NSString*)descriptionText inputAnswer:(NSString*)answerText
 {
-  if (time > 0) {
+  if (time >= 0) {
     _timer.text = [NSString stringWithFormat:@"%d", time];
     time = time - 1;
     NSLog(@"time=:%d", time);
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-      [self countTime: time];
+      [self countTime:time inputField:self.textField.text inputAnswer:answerText];
     });
-  } else {
-    _timer.text = [NSString stringWithFormat:@"%d", 0];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-      _timer.text = @"BOOOOOOMB!!!";
-    });
+  } else if (time == -1) {
+    _timer.text = @"BOOOOOOMB!!!";
     NSLog(@"booooooomb!!!");
+  } else if (time == -10 && [descriptionText isEqualToString:answerText]){
+    NSLog(@"STOP!!!");
+    [self countTime:time inputField:self.textField.text inputAnswer:answerText];
   }
 }
 
+- (NSString *)generateRandomStr:(int)length {
+  NSString *chars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789";
+  NSMutableString *randomStr = [NSMutableString string];
+  for (int i=0; i<length; i++) {
+    int index = arc4random_uniform((int)chars.length);
+    [randomStr appendString:[chars substringWithRange:NSMakeRange(index, 1)]];
+  }
+  return randomStr;
+}
 
+- (IBAction)sendText:(id)sender
+{
+  NSString *str = @"sample";
+  [self countTime:20 inputField:self.textField.text inputAnswer:str];
+}
 
 
 @end
