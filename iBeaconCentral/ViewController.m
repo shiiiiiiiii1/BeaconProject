@@ -50,7 +50,9 @@
 //    [alert show];
     NSLog(@"cannot use");
   }
-
+  
+  [self countTime:20];
+  
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,12 +139,13 @@
     // ローカル通知
     NSString *message = [NSString stringWithFormat:@"major:%@, minor:%@, accuracy:%f, rssi:%ld", nearestBeacon.major, nearestBeacon.minor, nearestBeacon.accuracy, (long)nearestBeacon.rssi];
 //    [self sendLocalNotificationForMessage:[rangeMessage stringByAppendingString:message]];
+
     NSLog(@"%@ %@", rangeMessage, message);   // ここで値の更新がされる
-    _range.text = rangeMessage;
-    _major.text = [NSString stringWithFormat:@"major:%@", nearestBeacon.major];
-    _minor.text = [NSString stringWithFormat:@"minor:%@", nearestBeacon.minor];
-    _accuracy.text = [NSString stringWithFormat:@"accuracy:%f", nearestBeacon.accuracy];
-    _rssi.text = [NSString stringWithFormat:@"rssi:%ld", nearestBeacon.rssi];
+//    _range.text = rangeMessage;
+//    _major.text = [NSString stringWithFormat:@"major:%@", nearestBeacon.major];
+//    _minor.text = [NSString stringWithFormat:@"minor:%@", nearestBeacon.minor];
+//    _accuracy.text = [NSString stringWithFormat:@"accuracy:%f", nearestBeacon.accuracy];
+//    _rssi.text = [NSString stringWithFormat:@"rssi:%ld", nearestBeacon.rssi];
   }
 }
 
@@ -162,5 +165,28 @@
     [self.locationManager startRangingBeaconsInRegion:self.beaconRegion];
   }
 }
+
+
+
+- (void)countTime:(int)time
+{
+  if (time > 0) {
+    _timer.text = [NSString stringWithFormat:@"%d", time];
+    time = time - 1;
+    NSLog(@"time=:%d", time);
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+      [self countTime: time];
+    });
+  } else {
+    _timer.text = [NSString stringWithFormat:@"%d", 0];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+      _timer.text = @"BOOOOOOMB!!!";
+    });
+    NSLog(@"booooooomb!!!");
+  }
+}
+
+
+
 
 @end

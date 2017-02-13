@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *accuracy;
 @property (weak, nonatomic) IBOutlet UILabel *rssi;
 
+@property (weak, nonatomic) IBOutlet UILabel *timer;
 
 @end
 
