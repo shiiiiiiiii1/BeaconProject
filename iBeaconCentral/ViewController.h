@@ -10,11 +10,13 @@
 
 @interface ViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UILabel *range;
-@property (weak, nonatomic) IBOutlet UILabel *major;
-@property (weak, nonatomic) IBOutlet UILabel *minor;
-@property (weak, nonatomic) IBOutlet UILabel *accuracy;
-@property (weak, nonatomic) IBOutlet UILabel *rssi;
+//@property (weak, nonatomic) IBOutlet UILabel *range;
+//@property (weak, nonatomic) IBOutlet UILabel *major;
+//@property (weak, nonatomic) IBOutlet UILabel *minor;
+//@property (weak, nonatomic) IBOutlet UILabel *accuracy;
+//@property (weak, nonatomic) IBOutlet UILabel *rssi;
+
+@property (weak, nonatomic) IBOutlet UITextField *randomStr;
 
 @property (weak, nonatomic) IBOutlet UILabel *timer;
 @property (weak, nonatomic) IBOutlet UITextField *textField;

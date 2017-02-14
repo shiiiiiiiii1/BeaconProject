@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "RandomString.h"
+#import "TimeCounter.h"
 #import <CoreLocation/CoreLocation.h>
 
 @interface ViewController () <CLLocationManagerDelegate>
@@ -14,6 +16,11 @@
 @property (nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) NSUUID *proximityUUID;
 @property (nonatomic) CLBeaconRegion *beaconRegion;
+
+@property RandomString *randomString;
+@property TimeCounter *timeCounter;
+
+@property int time;
 
 @end
 
@@ -25,25 +32,14 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view, typically from a nib.
 
-  
-  
-  
-//  NSString *str = [self generateRandomStr:6];
-  NSString *str = @"sample";
-  [self countTime:20 inputField:self.textField.text inputAnswer:str];
-  
-  
-  
-  
   if ([CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
     // CLLocationManagerの生成とデリゲートの設定
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
 
-    // 生成したUUIDからNSUUIDを作成
 //    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"BDB97A05-86E7-47BE-88E3-4455F2B285E4"];   // ランダム生成
-    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"5A506336-4948-4AFD-A2CD-29F549B25546"];   // app調べ
 //    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"6E400001-B5A3-F393-E0A9-E50E24DCCA9E"];   // 自分で調べた
+    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"5A506336-4948-4AFD-A2CD-29F549B25546"];   // app調べ
 
     // CLBeaconRegionを作成
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:self.proximityUUID identifier:@"shiiiiiiiii1"];
@@ -54,15 +50,16 @@
       // Beaconによる領域観測を開始
       [self.locationManager startMonitoringForRegion: self.beaconRegion];
     }
-
   } else {
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"確認" message:@"お使いの端末ではiBeaconを利用できません。" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-//    [alert show];
-    NSLog(@"cannot use");
+    NSLog(@"お使いの端末ではiBeaconを利用できません。");
   }
-  
 
-  
+// 爆弾止めるキーの生成
+  self.randomString = [[RandomString alloc] initWithLenght:3];
+// タイマーの時間をセット
+  self.time = 10;
+  self.timeCounter = [[TimeCounter alloc] initWithTime:self.time];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,42 +124,38 @@
   if (beacons.count > 0) {
     // 最も距離の近いBeaconについて処理する
     CLBeacon *nearestBeacon = beacons.firstObject;
-    
     NSString *rangeMessage;
     
+    [self timerUpdate:region];
     // Beacon の距離でメッセージを変える
     switch (nearestBeacon.proximity) {
       case CLProximityImmediate:
         rangeMessage = @"Range:Immediate";
+        _randomStr.text = self.randomString.randomStr;
         break;
       case CLProximityNear:
         rangeMessage = @"Range:Near";
+        _randomStr.text = @"";
         break;
       case CLProximityFar:
         rangeMessage = @"Range:Far";
+        _randomStr.text = @"";
         break;
       default:
         rangeMessage = @"Range:Unknown";
+        _randomStr.text = @"";
         break;
     }
     
     // ローカル通知
     NSString *message = [NSString stringWithFormat:@"major:%@, minor:%@, accuracy:%f, rssi:%ld", nearestBeacon.major, nearestBeacon.minor, nearestBeacon.accuracy, (long)nearestBeacon.rssi];
-//    [self sendLocalNotificationForMessage:[rangeMessage stringByAppendingString:message]];
 
     NSLog(@"%@ %@", rangeMessage, message);   // ここで値の更新がされる
-    
-//    _range.text = rangeMessage;
-//    _major.text = [NSString stringWithFormat:@"major:%@", nearestBeacon.major];
-//    _minor.text = [NSString stringWithFormat:@"minor:%@", nearestBeacon.minor];
-//    _accuracy.text = [NSString stringWithFormat:@"accuracy:%f", nearestBeacon.accuracy];
-//    _rssi.text = [NSString stringWithFormat:@"rssi:%ld", nearestBeacon.rssi];
   }
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
-//  [self sendLocalNotificationForMessage:@"Exit Region"];
   NSLog(@"Exit Region");
 }
 
@@ -178,40 +171,34 @@
 }
 
 
-
-// タイマー関数
-- (void)countTime:(int)time inputField:(NSString*)descriptionText inputAnswer:(NSString*)answerText
+// 爆弾タイマーの更新
+- (void)timerUpdate:(CLBeaconRegion *)region
 {
-  if (time >= 0) {
-    _timer.text = [NSString stringWithFormat:@"%d", time];
-    time = time - 1;
-    NSLog(@"time=:%d", time);
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-      [self countTime:time inputField:self.textField.text inputAnswer:answerText];
-    });
-  } else if (time == -1) {
-    _timer.text = @"BOOOOOOMB!!!";
-    NSLog(@"booooooomb!!!");
-  } else if (time == -10 && [descriptionText isEqualToString:answerText]){
-    NSLog(@"STOP!!!");
-    [self countTime:time inputField:self.textField.text inputAnswer:answerText];
+  if (self.timeCounter.countVal > 0) {
+    _timer.text = [NSString stringWithFormat:@"%d", self.timeCounter.countVal--];
+  } else if ( self.timeCounter.countVal == 0 ) {
+    _timer.text = @"BOOOMB!!!!!";
+    [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
   }
 }
 
-- (NSString *)generateRandomStr:(int)length {
-  NSString *chars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJLKMNOPQRSTUVWXYZ0123456789";
-  NSMutableString *randomStr = [NSMutableString string];
-  for (int i=0; i<length; i++) {
-    int index = arc4random_uniform((int)chars.length);
-    [randomStr appendString:[chars substringWithRange:NSMakeRange(index, 1)]];
-  }
-  return randomStr;
-}
-
+// ボタン押したら値取得
 - (IBAction)sendText:(id)sender
 {
-  NSString *str = @"sample";
-  [self countTime:20 inputField:self.textField.text inputAnswer:str];
+  NSString *randomStr = self.randomString.randomStr;
+  NSString *inputStr = self.textField.text;
+  if ([randomStr isEqualToString:inputStr]) {
+    // timerStop関数呼び出し
+    [self timerStop:self.beaconRegion];
+  }
+}
+
+// タイマーstop処理
+- (void)timerStop:(CLBeaconRegion *)region
+{
+  _timer.text = @"Success!!!";
+  [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+  
 }
 
 

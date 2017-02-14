@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2A088A31E5349DB001A0129 /* RandomString.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A088A21E5349DB001A0129 /* RandomString.m */; };
+		E2A088A61E536563001A0129 /* TimeCounter.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A088A51E536563001A0129 /* TimeCounter.m */; };
 		E2B4B7B11E4F183E00E9EFE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4B7B01E4F183E00E9EFE8 /* main.m */; };
 		E2B4B7B41E4F183E00E9EFE8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4B7B31E4F183E00E9EFE8 /* AppDelegate.m */; };
 		E2B4B7B71E4F183E00E9EFE8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B4B7B61E4F183E00E9EFE8 /* ViewController.m */; };
@@ -36,6 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E2A088A11E5349DB001A0129 /* RandomString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomString.h; sourceTree = "<group>"; };
+		E2A088A21E5349DB001A0129 /* RandomString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomString.m; sourceTree = "<group>"; };
+		E2A088A41E536563001A0129 /* TimeCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeCounter.h; sourceTree = "<group>"; };
+		E2A088A51E536563001A0129 /* TimeCounter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeCounter.m; sourceTree = "<group>"; };
 		E2B4B7AC1E4F183E00E9EFE8 /* iBeaconCentral.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iBeaconCentral.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2B4B7B01E4F183E00E9EFE8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E2B4B7B21E4F183E00E9EFE8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -109,6 +115,10 @@
 				E2B4B7B31E4F183E00E9EFE8 /* AppDelegate.m */,
 				E2B4B7B51E4F183E00E9EFE8 /* ViewController.h */,
 				E2B4B7B61E4F183E00E9EFE8 /* ViewController.m */,
+				E2A088A41E536563001A0129 /* TimeCounter.h */,
+				E2A088A51E536563001A0129 /* TimeCounter.m */,
+				E2A088A11E5349DB001A0129 /* RandomString.h */,
+				E2A088A21E5349DB001A0129 /* RandomString.m */,
 				E2B4B7B81E4F183E00E9EFE8 /* Main.storyboard */,
 				E2B4B7BB1E4F183E00E9EFE8 /* Assets.xcassets */,
 				E2B4B7BD1E4F183E00E9EFE8 /* LaunchScreen.storyboard */,
@@ -287,6 +297,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2B4B7B71E4F183E00E9EFE8 /* ViewController.m in Sources */,
+				E2A088A31E5349DB001A0129 /* RandomString.m in Sources */,
+				E2A088A61E536563001A0129 /* TimeCounter.m in Sources */,
 				E2B4B7B41E4F183E00E9EFE8 /* AppDelegate.m in Sources */,
 				E2B4B7B11E4F183E00E9EFE8 /* main.m in Sources */,
 			);
@@ -520,6 +532,7 @@
 				E2B4B7DB1E4F183E00E9EFE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E2B4B7DC1E4F183E00E9EFE8 /* Build configuration list for PBXNativeTarget "iBeaconCentralTests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +541,7 @@
 				E2B4B7DE1E4F183E00E9EFE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E2B4B7DF1E4F183E00E9EFE8 /* Build configuration list for PBXNativeTarget "iBeaconCentralUITests" */ = {
 			isa = XCConfigurationList;
@@ -536,6 +550,7 @@
 				E2B4B7E11E4F183E00E9EFE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
