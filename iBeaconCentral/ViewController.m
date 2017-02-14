@@ -30,15 +30,12 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  // Do any additional setup after loading the view, typically from a nib.
 
   if ([CLLocationManager isMonitoringAvailableForClass:[CLBeaconRegion class]]) {
     // CLLocationManagerの生成とデリゲートの設定
     self.locationManager = [CLLocationManager new];
     self.locationManager.delegate = self;
 
-//    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"BDB97A05-86E7-47BE-88E3-4455F2B285E4"];   // ランダム生成
-//    self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"6E400001-B5A3-F393-E0A9-E50E24DCCA9E"];   // 自分で調べた
     self.proximityUUID = [[NSUUID alloc] initWithUUIDString:@"5A506336-4948-4AFD-A2CD-29F549B25546"];   // app調べ
 
     // CLBeaconRegionを作成
@@ -97,7 +94,6 @@
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
   // ローカル通知
-  //  [self sendLocalNotificationForMessage:@"Enter Region"];
   NSLog(@"Enter Region");
 
   if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
@@ -109,12 +105,12 @@
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
   // ローカル通知
-//  [self sendLocalNotificationForMessage:@"Exit Region"];
   NSLog(@"Exit Region");
   
   // Beaconの距離測定を終了する
   if ([region isMemberOfClass:[CLBeaconRegion class]] && [CLLocationManager isRangingAvailable]) {
     [self.locationManager stopRangingBeaconsInRegion:(CLBeaconRegion *)region];
+    NSLog(@"End communication");
   }
 }
 
@@ -150,7 +146,7 @@
     // ローカル通知
     NSString *message = [NSString stringWithFormat:@"major:%@, minor:%@, accuracy:%f, rssi:%ld", nearestBeacon.major, nearestBeacon.minor, nearestBeacon.accuracy, (long)nearestBeacon.rssi];
 
-    NSLog(@"%@ %@", rangeMessage, message);   // ここで値の更新がされる
+    NSLog(@"%@ %@", rangeMessage, message);
   }
 }
 
@@ -171,6 +167,8 @@
 }
 
 
+
+
 // 爆弾タイマーの更新
 - (void)timerUpdate:(CLBeaconRegion *)region
 {
@@ -188,7 +186,6 @@
   NSString *randomStr = self.randomString.randomStr;
   NSString *inputStr = self.textField.text;
   if ([randomStr isEqualToString:inputStr]) {
-    // timerStop関数呼び出し
     [self timerStop:self.beaconRegion];
   }
 }
